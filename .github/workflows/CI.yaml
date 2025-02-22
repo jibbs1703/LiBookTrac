@@ -29,7 +29,7 @@ jobs:
 
       - name: Lint Python scripts with Ruff
         run: |
-          python -m ruff check app/ tests/ 
+          python -m ruff check app/ tests/
 
       - name: Run test with pytest
         run: |
