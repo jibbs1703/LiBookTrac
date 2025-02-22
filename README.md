@@ -1,6 +1,9 @@
 # LiBookTrac: A Library Management System
-
-LiBookTrac is an efficient library management system developed to streamline the management and tracking of 
+![Python Version](https://img.shields.io/badge/python-3.12-blue)
+![pre-commit](https://img.shields.io/badge/pre--commit-enabled-yellow)
+![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)
+## Overview
+LiBookTrac is an efficient library management system developed to streamline the management and tracking of
 library resources. Leveraging the capabilities of **Pydantic** and **FastAPI**, this project offers a robust
 and high-performance solution for both library administrators and users.
 
@@ -18,9 +21,9 @@ and high-performance solution for both library administrators and users.
 - **Pydantic:** Data validation and settings management using Python type annotations.
 - **MongoDB:** A non-tabular database, storing data as documents.
 
-## Getting Started 
+## Getting Started
 
-- **Clone the repository:** 
+- **Clone the repository:**
 ```bash
 git clone https://github.com/your-username/LiBookTrac.git
 cd LiBookTrac
