@@ -1,5 +1,6 @@
 # LiBookTrac: A Library Management System
 ![Python Version](https://img.shields.io/badge/python-3.12-blue)
+![CI](https://github.com/jibbs1703/LiBookTrac/actions/workflows/CI.yaml/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-yellow)
 ![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)
 ## Overview

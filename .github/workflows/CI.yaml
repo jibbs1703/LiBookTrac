@@ -1,4 +1,4 @@
-name: LibookTrac CI Pipeline
+name: CI Pipeline
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Lint Python scripts with Ruff
         run: |
-          python -m ruff check src/ tests/ 
+          python -m ruff check app/ tests/ 
 
       - name: Run test with pytest
         run: |
