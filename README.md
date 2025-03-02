@@ -2,9 +2,10 @@
 ![Python Version](https://img.shields.io/badge/python-3.12-blue)
 ![CI](https://github.com/jibbs1703/LiBookTrac/actions/workflows/CI.yaml/badge.svg)
 [![Pydantic v2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json)](https://pydantic.dev)
-![pre-commit](https://img.shields.io/badge/pre--commit-enabled-yellow)
+![pre-commit](https://img.shields.io/badge/precommit-enabled-yellow)
 ![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)
 ![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)
+
 ## Overview
 LiBookTrac is an efficient library management system developed to streamline the management and tracking of
 library resources. Leveraging the capabilities of **Pydantic** and **FastAPI**, this project offers a robust
