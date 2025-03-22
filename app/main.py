@@ -13,6 +13,3 @@ templates = Jinja2Templates(directory="app/templates")
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-
-
-# uvicorn app.main:app --host 127.0.0.1 --port 8008 --reload

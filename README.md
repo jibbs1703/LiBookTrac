@@ -47,11 +47,11 @@ pip install -r requirements.txt
 
 - **Run Library Management Application Locally:**
 ```bash
-uvicorn app.main:app --host 127.0.0.1 --port 8000
+uvicorn app.main:app --host 127.0.0.1 --port 8008
 ```
 
 - **Run Library Management Application in Container:**
 ```bash
-docker build -f docker/Dockerfile -t libooktrac:latest .
-docker run -p 8000:8000 libooktrac:latest
+docker build -t libooktrac:latest .
+docker run -v .:/workspace -p 8008:8008 libooktrac:latest
 ```
