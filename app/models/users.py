@@ -2,7 +2,7 @@
 
 import re
 import uuid
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
@@ -77,3 +77,43 @@ class UserBase(BaseModel):
 
     class ConfigDict:
         from_attributes = True  
+
+
+class User(UserBase):
+    membership_status: Membership = Field(default=Membership.inactive,
+                                          description="User's membership status (active/inactive)")
+    membership_start_date: date | None = Field(default=None,
+                                               description="Date when membership started")
+    membership_end_date: date | None = Field(default=None,
+                                             description="Date when membership expires")
+    date_joined: date = Field(default_factory=date.today, description="Date the user registered")
+    books_borrowed: int = Field(default=0, ge=0,
+                                description="Number of books currently borrowed")
+    max_borrow_limit: int = Field(default=5, ge=1,
+                                  description="Maximum number of books a user can borrow at once")
+    borrow_history: list[uuid.UUID] = Field(default_factory=list,
+                                            description="List of book IDs borrowed by the user")
+    fines_owed: float = Field(default=0.0, ge=0.0,
+                              description="Total amount of fines owed by the user")
+    is_active: bool = Field(default=True, description="Whether the user account is active")
+    last_login: datetime | None = Field(default=None,
+                                        description="Timestamp of the user's last login")
+    password_reset_token: str | None = Field(default=None, description="Token for password reset")
+    password_reset_token_expiry: datetime | None = Field(default=None,
+                                                         description=(
+                                                    "Expiration time for the password reset token"
+                                                         ))
+    preferred_genres: list[str] = Field(
+        default_factory=list,
+        description="User's preferred book genres"
+    )
+    communication_preferences: dict = Field(
+        default_factory=dict,
+        description=(
+            "User's communication preferences (e.g., email, SMS)"
+        )
+    )
+    parent_guardian_name: str | None = Field(default=None,
+                                             description="Name of the parent or guardian")
+    parent_guardian_contact: str | None = Field(default=None,
+                                    description="Contact information for the parent or guardian")

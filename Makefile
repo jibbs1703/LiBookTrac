@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "Fixed issue with Makefile automation and CI tests"
+COMMIT_MSG ?= "Added additional User model class to track User characteristics"
 
 # Target to add changes to staging
 add:
