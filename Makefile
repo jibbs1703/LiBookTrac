@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "Added additional User model class to track User characteristics"
+COMMIT_MSG ?= "refactored user models and updated project requirements and description"
 
 # Target to add changes to staging
 add:

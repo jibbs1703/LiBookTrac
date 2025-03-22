@@ -5,6 +5,7 @@ import uuid
 from datetime import date, datetime
 from enum import Enum
 
+from beanie import Document
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
@@ -20,8 +21,7 @@ class Membership(Enum):
     inactive = "inactive"
 
 
-class UserBase(BaseModel):
-    user_id: uuid.UUID = Field(default_factory=uuid.uuid4, description="Unique user identifier")
+class UserRegister(BaseModel):
     first_name: str = Field(..., min_length=1, max_length=50, description="User's first name")
     last_name: str = Field(..., min_length=1, max_length=50, description="User's last name")
     phone_number: str = Field(..., pattern=r'^\d{3}-\d{3}-\d{4}$',
@@ -32,6 +32,13 @@ class UserBase(BaseModel):
     username: str = Field(..., min_length=3, max_length=30, description="Unique username for login")
     password: str = Field(..., min_length=8, max_length=100, description="User password")
     user_category: UserType
+
+    @field_validator("first_name", "last_name", mode="before")
+    @classmethod
+    def convert_to_camel_case(cls, v):
+        def to_camel_case(name):
+            return ''.join(word.capitalize() for word in name.split())
+        return to_camel_case(v)
     
     @field_validator("phone_number")
     @classmethod
@@ -75,11 +82,9 @@ class UserBase(BaseModel):
             raise ValueError("Password must contain at least one special character")
         return value
 
-    class ConfigDict:
-        from_attributes = True  
 
-
-class User(UserBase):
+class UserDetails(Document, UserRegister):
+    user_id: uuid.UUID = Field(default_factory=uuid.uuid4, description="Unique user identifier")
     membership_status: Membership = Field(default=Membership.inactive,
                                           description="User's membership status (active/inactive)")
     membership_start_date: date | None = Field(default=None,
@@ -113,7 +118,26 @@ class User(UserBase):
             "User's communication preferences (e.g., email, SMS)"
         )
     )
-    parent_guardian_name: str | None = Field(default=None,
-                                             description="Name of the parent or guardian")
+    parent_guardian_first_name: str | None = Field(default=None,
+                                             description="First Name of the parent or guardian")
+    parent_guardian_last_name: str | None = Field(default=None,
+                                             description="Last Name of the parent or guardian")
     parent_guardian_contact: str | None = Field(default=None,
                                     description="Contact information for the parent or guardian")
+    
+    @field_validator("parent_guardian_first_name", 
+                     "parent_guardian_last_name", mode="before")
+    @classmethod
+    def convert_to_camel_case(cls, v):
+        def to_camel_case(name):
+            return ''.join(word.capitalize() for word in name.split())
+        return to_camel_case(v)
+    
+    class Settings:
+        name = "users"  # MongoDB collection name
+        
+
+class UserPasswordUpdate(BaseModel):
+    password: str = Field(..., min_length=8, max_length=100,
+                          description="update user password")
+    salt: str

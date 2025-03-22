@@ -4,12 +4,12 @@ from datetime import date
 import pytest
 from pydantic import ValidationError
 
-from app.models.users import UserBase
+from app.models.users import UserRegister
 
 
 @pytest.mark.unit
 def test_valid_user_entry():
-    UserBase(
+    UserRegister(
         first_name="Jane",
         last_name="Smith",
         phone_number="987-654-3210",
@@ -26,7 +26,7 @@ def test_valid_user_entry():
 @pytest.mark.unit
 def test_missing_required_field():
     with pytest.raises(ValidationError) as excinfo:
-        UserBase(
+        UserRegister(
             last_name="Smith",
             phone_number="987-654-3210",
             date_of_birth=date(1995, 5, 20),
@@ -42,7 +42,7 @@ def test_missing_required_field():
 @pytest.mark.unit
 def test_invalid_email_format():
     with pytest.raises(ValidationError) as excinfo:
-        UserBase(
+        UserRegister(
             first_name="Jane",
             last_name="Smith",
             phone_number="987-654-3210",
@@ -59,7 +59,7 @@ def test_invalid_email_format():
 @pytest.mark.unit
 def test_user_below_13_years_old():
     with pytest.raises(ValidationError) as excinfo:
-        UserBase(
+        UserRegister(
             first_name="Jane",
             last_name="Smith",
             phone_number="987-654-3210",
@@ -75,7 +75,7 @@ def test_user_below_13_years_old():
 
 @pytest.mark.unit
 def test_user_above_13_years_old():
-    user = UserBase(
+    user = UserRegister(
         first_name="Jane",
         last_name="Smith",
         phone_number="987-654-3210",
@@ -92,7 +92,7 @@ def test_user_above_13_years_old():
 @pytest.mark.unit
 def test_invalid_phone_number_format():
     with pytest.raises(ValidationError) as excinfo:
-        UserBase(
+        UserRegister(
             first_name="Jane",
             last_name="Smith",
             phone_number="invalid-phone",
@@ -109,7 +109,7 @@ def test_invalid_phone_number_format():
 @pytest.mark.unit
 def test_invalid_user_entry():
     with pytest.raises(ValidationError) as excinfo:
-        UserBase(
+        UserRegister(
             first_name="Jane",
             last_name="Smith",
             phone_number="123456789",
@@ -135,11 +135,11 @@ def test_invalid_user_entry():
 )
 def test_invalid_passwords(password, expected_error):
     with pytest.raises(ValueError) as excinfo:
-        UserBase.validate_password(password)
+        UserRegister.validate_password(password)
     assert expected_error in str(excinfo.value)
 
 
 @pytest.mark.unit
 def test_valid_password():
     valid_password = "ValidPass1!"
-    assert UserBase.validate_password(valid_password) == valid_password
+    assert UserRegister.validate_password(valid_password) == valid_password
