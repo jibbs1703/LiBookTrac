@@ -45,7 +45,13 @@ libooktrac\Scripts\activate
 pip install -r requirements.txt
 ```
 
-- **Run Library Management Application:**
+- **Run Library Management Application Locally:**
 ```bash
 uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+- **Run Library Management Application in Container:**
+```bash
+docker build -f docker/Dockerfile -t libooktrac:latest .
+docker run -p 8000:8000 libooktrac:latest
 ```
