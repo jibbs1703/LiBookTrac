@@ -1,4 +1,4 @@
-name: Libooktrac CI-CD Pipeline
+name: CI Pipeline
 
 on:
   push:
@@ -30,8 +30,14 @@ jobs:
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
-      - name: Lint Scripts
-        uses: ./.github/workflows/lint.yml
+      - name: Lint Python scripts with Ruff
+        run: |
+          python -m ruff check app/ tests/
 
-      - name: Run Tests
-        uses: ./.github/workflows/test.yml
+      - name: Run test with pytest
+        run: |
+          if ls tests/*.py 1> /dev/null 2>&1; then
+            pytest -v tests/
+          else
+            echo "No tests found, skipping..."
+          fi
