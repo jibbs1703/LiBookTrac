@@ -2,6 +2,7 @@ import uuid
 from datetime import date
 from enum import Enum
 
+from beanie import Document
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -40,12 +41,12 @@ class BookBase(BaseModel):
             raise ValueError("ISBN must be 10 or 13 digits")
         return isbn_clean
 
-    class Config:
-        orm_mode = True
+    class Settings:
+        name = "users"  # MongoDB collection name
 
 
 # Book Create model that extends BookBase
-class BookCreate(BookBase):
+class BookCreate(Document, BookBase):
     book_id: uuid.UUID = Field(default_factory=uuid.uuid4, description="Unique book identifier")
     # Fields specific to hard copy
     total_copies: int | None = Field(
@@ -93,5 +94,5 @@ class BookResponse(BookBase):
     file_format: str | None = None
 
 
-class Config:
-    orm_mode = True
+class Settings:
+        name = "users"  # MongoDB collection name
