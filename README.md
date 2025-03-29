@@ -56,5 +56,4 @@ uvicorn app.main:app --host 127.0.0.1 --port 8008
 docker build -t libooktrac:latest .
 docker run -it --name dev-env -v .:/workspace -p 8008:8008 libooktrac:latest
 docker exec -it dev-env sh
- sh
 ```

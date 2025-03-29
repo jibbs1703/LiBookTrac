@@ -1,97 +1,107 @@
-import uuid
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
+from uuid import uuid4
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
-# Enum for book type
 class BookType(Enum):
-    HARD_COPY = "hard_copy"
-    SOFT_COPY = "soft_copy"
+    PAPERBACK = "paperback"
+    EBOOK = "ebook"
+    AUDIOBOOK = "audiobook"
 
 
-# Base Book model with common fields
-class BookBase(BaseModel):
-    title: str = Field(..., min_length=1, max_length=200, description="Title of the book")
-    author: str = Field(..., min_length=1, max_length=100, description="Author(s) of the book")
-    publication_date: date = Field(..., description="Publication date of the book")
-    isbn: str | None = Field(
-        None, min_length=10, max_length=13, description="ISBN number (10 or 13 digits)"
-    )
-    book_type: BookType = Field(..., description="Type of book: hard_copy or soft_copy")
+class EBookType(Enum):
+    PDF = "pdf"
+    EPUB = "epub"
+    MOBI = "mobi"
+    AZW = "azw"
+    DOCX = "docx"
+    TXT = "txt"
+    HTML = "html"
+    RTF = "rtf"
+    NA = "N/A"
 
-    @field_validator("publication_date")
+
+class BookStatus(Enum):
+    AVAILABLE = "available"
+    CHECKED_OUT = "checked_out"
+    RESERVED = "reserved"
+
+
+class BookRequest(BaseModel):
+    title: str | None = Field(None, description="Title of the book")
+    author: str | None = Field(None, description="Author of the book")
+    genre: str | None = Field(None, description="Genre of the book")
+    isbn: str | None = Field(None, description="International Standard Book Number")
+    book_type: BookType | None = Field(None, 
+                                       description="Type of the book (e.g., paperback, ebook)")
+
+    @field_validator("isbn", mode="before")
     @classmethod
-    def validate_publication_date(cls, v):
-        today = date.today()
-        if v > today:
-            raise ValueError("Publication date cannot be in the future")
+    def validate_isbn_length(cls, v):
+        if v and len(v) not in [10, 13]:
+            raise ValueError("ISBN must be either 10 or 13 characters long")
+        return v
+    
+    @field_validator("isbn", mode="before")
+    @classmethod
+    def validate_isbn_format(cls, v):
+        if v and not v.isdigit():
+            raise ValueError("ISBN must contain only digits")
+        return v
+    
+    model_config = ConfigDict(use_enum_values = True)
+
+
+class BookInformation(BookRequest):
+    book_uuid: str = Field(default_factory=lambda: str(uuid4()), 
+                           description="Unique identifier for the book")
+    book_status: BookStatus = Field(description="Current status of the book")
+    publisher: str | None = Field(None, description="Publisher of the book")
+    publication_date: date | None = Field(None, description="Publication date of the book")
+    shelf_location: str| None = Field(None, description="Location of the book in the library")
+    total_pages: int | None = Field(None, description="Total number of pages in the book")
+    file_format: EBookType = Field(None,
+                                   description="Format of the softcopy book, e.g., 'PDF', 'EPUB'")
+    available_copies: int = Field(ge=0, description="Number of copies available for borrowing")
+    tags: list[str] = Field(default_factory=list, 
+                            description="Tags for categorization or searching")
+    description: str | None = Field(None, description="Brief summary of the book")
+
+    @field_validator("publication_date", mode="after")
+    @classmethod
+    def convert_date_to_datetime(cls, v):
+        return datetime.combine(v, datetime.min.time())
+
+    model_config = ConfigDict(use_enum_values = True)
+
+
+class BookResponse(BaseModel):
+    results: list[BookInformation]
+    total_count: int = Field(description="Total number of matching books returned by the search")
+
+    @field_validator("results", mode="before")
+    @classmethod
+    def validate_results(cls, v):
+        if not isinstance(v, list):
+            raise ValueError("Results must be a list")
         return v
 
-    @field_validator("isbn", pre=True, always=True)
-    @classmethod
-    def validate_isbn(cls, v):
-        if v is None:
-            return v
-        # Remove any hyphens or spaces
-        isbn_clean = "".join(filter(str.isdigit, v))
-        if len(isbn_clean) not in (10, 13):
-            raise ValueError("ISBN must be 10 or 13 digits")
-        return isbn_clean
 
-    class Config:
-        orm_mode = True
-
-
-# Book Create model that extends BookBase
-class BookCreate(BookBase):
-    book_id: uuid.UUID = Field(default_factory=uuid.uuid4, description="Unique book identifier")
-    # Fields specific to hard copy
-    total_copies: int | None = Field(
-        None, ge=0, description="Total number of physical copies (required for hard_copy)"
+sample_book = BookInformation(
+        title="Sample Book",
+        author="Sample Author",
+        genre="Fiction",
+        isbn="1234567890123",
+        book_type="paperback",
+        book_status="available",
+        publisher="Sample Publisher",
+        publication_date="2023-01-01",
+        shelf_location="Shelf A1",
+        total_pages=300,
+        file_format="pdf",
+        available_copies=5,
+        tags=["mystery", "fiction"],
+        description="This is a sample book for testing purposes."
     )
-    available_copies: int | None = Field(
-        None, ge=0, description="Number of available physical copies (required for hard_copy)"
-    )
-    # Fields specific to soft copy
-    file_url: str | None = Field(
-        None, max_length=500, description="URL to the digital file (required for soft_copy)"
-    )
-    file_format: str | None = Field(
-        None,
-        max_length=10,
-        description="Format of the digital file (e.g., PDF, EPUB) (required for soft_copy)",
-    )
-
-    @field_validator("total_copies", "available_copies", pre=True)
-    @classmethod
-    def ensure_hard_copy_fields(cls, v, values):
-        if "book_type" in values and values["book_type"] == BookType.HARD_COPY:
-            if v is None:
-                raise ValueError(f"{v} is required for hard_copy books")
-            if "total_copies" in values and "available_copies" in values:
-                if values.get("available_copies", 0) > values.get("total_copies", 0):
-                    raise ValueError("Available copies cannot exceed total copies")
-        return v
-
-    @field_validator("file_url", "file_format", pre=True)
-    @classmethod
-    def ensure_soft_copy_fields(cls, v, values):
-        if "book_type" in values and values["book_type"] == BookType.SOFT_COPY:
-            if v is None:
-                raise ValueError(f"{v} is required for soft_copy books")
-        return v
-
-
-# Book Response model for returning data
-class BookResponse(BookBase):
-    book_id: uuid.UUID
-    total_copies: int | None = None
-    available_copies: int | None = None
-    file_url: str | None = None
-    file_format: str | None = None
-
-
-class Config:
-    orm_mode = True
