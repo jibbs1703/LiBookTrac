@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "decouple CI pipeline"
+COMMIT_MSG ?= "made tests folder a package"
 
 # Target to add changes to staging
 add:
