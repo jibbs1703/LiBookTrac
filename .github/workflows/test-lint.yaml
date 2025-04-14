@@ -4,7 +4,7 @@ on:
   workflow_call
 
 jobs:
-  Test and Lint:
+  Test-Lint:
     runs-on: ubuntu-latest
 
     steps:
