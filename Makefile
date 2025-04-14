@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "updated project requirements"
+COMMIT_MSG ?= "adjusted project requirements"
 
 # Target to add changes to staging
 add:
