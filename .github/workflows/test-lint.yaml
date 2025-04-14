@@ -1,16 +1,10 @@
-name: CI Pipeline
+name: Lint Python Scripts and Run Tests
 
 on:
-  push:
-    branches:
-      - "main"
-      - "feature/**"
-  pull_request:
-    branches:
-      - "main"
+  workflow_call
 
 jobs:
-  CI:
+  Test and Lint:
     runs-on: ubuntu-latest
 
     steps:

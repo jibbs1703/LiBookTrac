@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "refactored user models and updated project requirements and description"
+COMMIT_MSG ?= "decouple CI pipeline"
 
 # Target to add changes to staging
 add:
