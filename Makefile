@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "made tests folder a package"
+COMMIT_MSG ?= "updated project requirements"
 
 # Target to add changes to staging
 add:
