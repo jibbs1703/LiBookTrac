@@ -1,7 +1,7 @@
 """Routes Package for LiBookTrac Application."""
 from fastapi import APIRouter
 
-from app.routes.books import router as books_router
+from backend.v1.app.routes.books import router as books_router
 
 router = APIRouter()
 

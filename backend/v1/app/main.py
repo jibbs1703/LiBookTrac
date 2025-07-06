@@ -5,9 +5,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pymongo.collection import Collection
 
-from app.config import config
-from app.database.database import access_db_collection, connect_to_mongodb
-from app.routes import router as all_routers
+from backend.v1.app.config import config
+from backend.v1.app.database.database import access_db_collection, connect_to_mongodb
+from backend.v1.app.routes import router as all_routers
 
 collections ={}
 
