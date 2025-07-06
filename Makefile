@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "adjusted project requirements"
+COMMIT_MSG ?= "removed tests to refactor models and routes"
 
 # Target to add changes to staging
 add:
