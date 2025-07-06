@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "removed tests to refactor models and routes"
+COMMIT_MSG ?= "added sample test to pass CI"
 
 # Target to add changes to staging
 add:
