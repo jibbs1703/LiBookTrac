@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "added sample test to pass CI"
+COMMIT_MSG ?= "refactored test-lint job in CI"
 
 # Target to add changes to staging
 add:
