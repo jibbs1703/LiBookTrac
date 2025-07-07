@@ -2,8 +2,8 @@
 from fastapi import APIRouter, HTTPException
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
-from backend.v1.app.config import config
 from backend.v1.app.models.books import BookInformation, BookResponse
+from backend.v1.app.server import config
 
 router = APIRouter()
 

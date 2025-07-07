@@ -1,17 +1,17 @@
 FROM python:3.12-slim
 
-RUN apt-get update && apt-get install -y bash && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /workspace
 
-ENV PYTHONPATH=/workspace
+RUN useradd -ms /bin/bash jibbs-user
 
-COPY ../requirements.txt .
+RUN chown -R jibbs-user:jibbs-user /workspace
 
-RUN pip install --no-cache-dir -r requirements.txt
+USER jibbs-user
 
-COPY . .
+COPY . /workspace
 
-EXPOSE 8008
+RUN pip install --no-cache-dir -r /workspace/backend/requirements.txt
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8008", "--reload"]
+ENV PATH="/home/jibbs-user/.local/bin:${PATH}"
+
+CMD ["uvicorn", "backend.v1.app.server.server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
