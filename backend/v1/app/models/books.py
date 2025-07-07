@@ -1,3 +1,4 @@
+"""Pydantic Classes for the Books Models"""
 from datetime import date, datetime
 from enum import Enum
 from uuid import uuid4
@@ -87,21 +88,3 @@ class BookResponse(BaseModel):
         if not isinstance(v, list):
             raise ValueError("Results must be a list")
         return v
-
-
-sample_book = BookInformation(
-        title="Sample Book",
-        author="Sample Author",
-        genre="Fiction",
-        isbn="1234567890123",
-        book_type="paperback",
-        book_status="available",
-        publisher="Sample Publisher",
-        publication_date="2023-01-01",
-        shelf_location="Shelf A1",
-        total_pages=300,
-        file_format="pdf",
-        available_copies=5,
-        tags=["mystery", "fiction"],
-        description="This is a sample book for testing purposes."
-    )
