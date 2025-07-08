@@ -1,0 +1,35 @@
+name: libooktrac
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      .env
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    depends_on:
+      - db
+    networks:
+      - libooktrac-network
+
+  db:
+    image: mongo:latest
+    env_file:
+      .env
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - libooktrac-network
+
+volumes:
+  mongo-data:
+
+networks:
+  libooktrac-network:
+    driver: bridge

@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "completed directory refactor"
+COMMIT_MSG ?= "added starter files for docker compose stack"
 
 # Target to add changes to staging
 add:
