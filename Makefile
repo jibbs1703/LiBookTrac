@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "refactored CI to correct error with requirements file, added mongodb to compose stack"
+COMMIT_MSG ?= "refactored docker compose to supress messy logs"
 
 # Lint Scripts Locally
 lint:
