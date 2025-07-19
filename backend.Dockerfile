@@ -10,8 +10,8 @@ USER jibbs-user
 
 COPY . /workspace
 
-RUN pip install --no-cache-dir -r /workspace/backend/requirements.txt
-
 ENV PATH="/home/jibbs-user/.local/bin:${PATH}"
+
+RUN pip install --no-cache-dir -r /workspace/backend/requirements.txt
 
 CMD ["uvicorn", "backend.v1.app.server.server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

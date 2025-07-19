@@ -25,7 +25,6 @@ services:
       - mongodb_data:/data/db
     environment:
       - MONGO_INITDB_DATABASE=libooktrac
-    command: mongod --logLevel 0
     networks:
       - libooktrac-network
 

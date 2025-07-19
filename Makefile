@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "refactored docker compose to supress messy logs"
+COMMIT_MSG ?= "refactored docker compose and dockerfile"
 
 # Lint Scripts Locally
 lint:
