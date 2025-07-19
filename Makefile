@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "refactored docker compose and dockerfile"
+COMMIT_MSG ?= "added test for books enum class, removed sample test"
 
 # Lint Scripts Locally
 lint:

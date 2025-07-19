@@ -1,7 +1,7 @@
 """Pydantic Classes for the Books Models"""
+
 from datetime import date, datetime
 from enum import Enum
-from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -21,7 +21,6 @@ class EBookType(Enum):
     TXT = "txt"
     HTML = "html"
     RTF = "rtf"
-    NA = "N/A"
 
 
 class BookStatus(Enum):
@@ -56,8 +55,7 @@ class BookRequest(BaseModel):
 
 
 class BookInformation(BookRequest):
-    book_uuid: str = Field(default_factory=lambda: str(uuid4()), 
-                           description="Unique identifier for the book")
+    book_uuid: str = Field(description="Unique identifier for the book")
     book_status: BookStatus = Field(description="Current status of the book")
     publisher: str | None = Field(None, description="Publisher of the book")
     publication_date: date | None = Field(None, description="Publication date of the book")
