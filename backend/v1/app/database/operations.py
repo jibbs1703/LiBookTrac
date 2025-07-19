@@ -1,45 +1,50 @@
 """Database Initialization Operations."""
 
+import asyncio
 import logging
+import os
 from contextlib import asynccontextmanager
 
+from beanie import init_beanie
 from fastapi import FastAPI
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 
-from backend.v1.app.config.settings import (
-    COLLECTIONS,
-    MONGO_DB,
-    MONGO_HOST,
-    MONGO_PASSWORD,
-    MONGO_PORT,
-    MONGO_USER,
-)
+from backend.v1.app.schemas import Book
 
 logger = logging.getLogger(__name__)
 
-
-def init_db():
-    uri = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/"
-    client = MongoClient(uri)
-    db = client[MONGO_DB]
-
-    for name in COLLECTIONS:
-        if name is None:
-            logger.warning("Encountered None in COLLECTIONS, skipping.")
-            continue
-        collection = db[name]
-        if collection.count_documents({}) == 0:
-            collection.insert_one({"_init": True})
-            logger.info(f"Created collection: {name}")
-        else:
-            logger.info(f"Collection already exists: {name}")
-    client.close()
+MONGO_URI = os.getenv("MONGODB_URI",
+                      "mongodb://localhost:27017/libooktrac")
+MAX_RETRIES = 5
+INTERVAL = 60
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Initializing MongoDB collections...")
-    init_db()
-    logger.info("MongoDB initialization complete")
+    """
+    FastAPI lifespan context manager for database initialization and shutdown.
+    """
+    client = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            client = AsyncIOMotorClient(MONGO_URI)
+            await client.admin.command("ping")
+            await init_beanie(
+                database=client.get_database("libooktrac_db"),
+                document_models=[Book]
+            )
+            print("Connected to MongoDB and initialized Beanie")
+            break
+        except (OSError, ConnectionError) as e:
+            print(f"Failed to connect to MongoDB (attempt {attempt + 1}/{MAX_RETRIES}): {e}")
+            if attempt < MAX_RETRIES - 1:
+                await asyncio.sleep(INTERVAL)
+            else:
+                raise Exception("Could not connect to MongoDB after multiple attempts") from e
+    
+    print("Beanie initialization complete. Database and collections are ready.")
     yield
-    logger.info("Shutting down FastAPI app")
+    print("Application shutdown: Closing MongoDB client...")
+    if client:
+        client.close()
+    print("MongoDB client closed.")

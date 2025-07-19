@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "added mongodb container to docker compose stack"
+COMMIT_MSG ?= "refactored CI to correct error with requirements file, added mongodb to compose stack"
 
 # Lint Scripts Locally
 lint:
