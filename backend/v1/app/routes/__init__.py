@@ -5,4 +5,4 @@ from backend.v1.app.routes.system import router as system_router
 
 router = APIRouter()
 
-router.include_router(system_router, tags=["books"])
+router.include_router(system_router, tags=["system"])

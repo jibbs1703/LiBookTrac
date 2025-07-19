@@ -53,7 +53,7 @@ uvicorn app.main:app --host 127.0.0.1 --port 8008
 
 - **Run Library Management Application in Container:**
 ```bash
-docker build -t libooktrac:latest .
-docker run -it --name dev-env -v .:/workspace -p 8008:8008 libooktrac:latest
-docker exec -it dev-env sh
+docker build -f backend.Dockerfile -t libooktrac:latest .
+docker run -it --name libooktrac-env -v .:/workspace -p 8000:8000 libooktrac:latest
+docker exec -it libooktrac-env sh
 ```

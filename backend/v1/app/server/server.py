@@ -3,6 +3,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+from backend.v1.app.database.operations import lifespan
 from backend.v1.app.routes import router as api_router
 from backend.v1.app.server import config as app_config
 
@@ -11,7 +12,7 @@ def libooktrac() -> FastAPI:
     app = FastAPI(name=app_config.TITLE,
                   description=app_config.DESCRIPTION,
                   version=app_config.VERSION,
-                  )
+                  lifespan=lifespan,)
 
     app.add_middleware(
         CORSMiddleware,
