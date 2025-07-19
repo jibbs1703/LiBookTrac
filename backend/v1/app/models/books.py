@@ -61,8 +61,7 @@ class BookInformation(BookRequest):
     publication_date: date | None = Field(None, description="Publication date of the book")
     shelf_location: str| None = Field(None, description="Location of the book in the library")
     total_pages: int | None = Field(None, description="Total number of pages in the book")
-    file_format: EBookType = Field(None,
-                                   description="Format of the softcopy book, e.g., 'PDF', 'EPUB'")
+    file_format: EBookType = Field(description="Format of the softcopy book, e.g., 'PDF', 'EPUB'")
     available_copies: int = Field(ge=0, description="Number of copies available for borrowing")
     tags: list[str] = Field(default_factory=list, 
                             description="Tags for categorization or searching")

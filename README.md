@@ -1,13 +1,18 @@
 # LiBookTrac: A Library Management System
+
 ![Python Version](https://img.shields.io/badge/python-3.12-blue)
 ![CI](https://github.com/jibbs1703/LiBookTrac/actions/workflows/CI.yaml/badge.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-v0.116-blue?logo=fastapi&style=flat)
 [![Pydantic v2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json)](https://pydantic.dev)
-[![MongoDB](https://img.shields.io/badge/MongoDB-v4-green?logo=mongodb&style=flat)](https://www.mongodb.com/)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v16-blue?logo=postgresql&style=flat)
+![Docker](https://img.shields.io/badge/Docker-v41-blue?logo=docker&style=flat)
+![Nginx](https://img.shields.io/badge/Nginx-v1.28-green?logo=nginx&style=flat)
 ![pre-commit](https://img.shields.io/badge/precommit-enabled-yellow)
 ![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)
 ![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)
 
 ## Overview
+
 LiBookTrac is an efficient library management system developed to streamline the management and tracking of
 library resources. Leveraging the capabilities of **Pydantic** and **FastAPI**, this project offers a robust
 and high-performance solution for both library administrators and users.
@@ -22,9 +27,9 @@ and high-performance solution for both library administrators and users.
 
 ## Technologies Used
 
-- **FastAPI:** A modern web framework for building APIs with Python 3.7+ based on standard Python type hints.
+- **FastAPI:** A modern web framework for building APIs with Python based on standard Python type hints.
 - **Pydantic:** Data validation and settings management using Python type annotations.
-- **MongoDB:** A non-tabular database, storing data as documents.
+- **PostgreSQL:**  A relational database management system for storing library data.
 
 ## Getting Started
 

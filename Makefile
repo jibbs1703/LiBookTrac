@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "added test for books enum class, removed sample test"
+COMMIT_MSG ?= "cleared out all mongodb components"
 
 # Lint Scripts Locally
 lint:

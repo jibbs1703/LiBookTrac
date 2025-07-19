@@ -1,4 +1,5 @@
-"""API Routes for Books"""
+"""LibookTrac Backend Books Endpoints."""
+
 from fastapi import APIRouter, HTTPException
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
