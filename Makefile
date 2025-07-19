@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "cleared out all mongodb components"
+COMMIT_MSG ?= "added postgres database to compose stack"
 
 # Lint Scripts Locally
 lint:
