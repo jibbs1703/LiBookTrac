@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "added postgres database to compose stack"
+COMMIT_MSG ?= "added test for home endpoint"
 
 # Lint Scripts Locally
 lint:
