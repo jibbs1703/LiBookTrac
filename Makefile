@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "added test for home endpoint"
+COMMIT_MSG ?= "added books models"
 
 # Lint Scripts Locally
 lint:
