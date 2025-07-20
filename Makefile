@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "refactored docker compose and dockerfile"
+COMMIT_MSG ?= "refactored books models and routes; added books table schema"
 
 # Lint Scripts Locally
 lint:

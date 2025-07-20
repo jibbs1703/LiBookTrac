@@ -1,2 +1,2 @@
-"""Database Package for LiBookTrac Application."""
+"""Database Module for LiBookTrac Application."""
 
