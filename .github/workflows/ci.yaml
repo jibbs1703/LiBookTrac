@@ -17,7 +17,10 @@ jobs:
 
   docker:
     name: Build and Push Docker Image
-    uses: ./.github/workflows/image-registry.yaml
+    uses: ./.github/workflows/push-image.yaml
+    permissions:
+      contents: read
+      packages: write
     secrets: inherit
     needs: tests
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
