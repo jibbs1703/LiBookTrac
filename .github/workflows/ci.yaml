@@ -16,8 +16,8 @@ jobs:
     secrets: inherit
 
   docker:
-    name: Run Test
-    uses: ./.github/workflows/test-lint.yaml
+    name: Build and Push Docker Image
+    uses: ./.github/workflows/image-registry.yaml
     secrets: inherit
     needs: tests
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
