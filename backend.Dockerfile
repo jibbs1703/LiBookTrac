@@ -1,5 +1,7 @@
 FROM python:3.12-slim
 
+LABEL org.opencontainers.image.source="https://github.com/jibbs1703/LiBookTrac"
+
 WORKDIR /workspace
 
 RUN useradd -ms /bin/bash jibbs-user
