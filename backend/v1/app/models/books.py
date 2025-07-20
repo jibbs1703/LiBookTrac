@@ -27,6 +27,10 @@ class BookStatus(Enum):
     AVAILABLE = "available"
     CHECKED_OUT = "checked_out"
     RESERVED = "reserved"
+    ON_HOLD = "on_hold"
+    DAMAGED = "damaged"
+    LOST = "lost"
+    ARCHIVED = "archived"
 
 
 class BookBase(BaseModel):
@@ -37,7 +41,7 @@ class BookBase(BaseModel):
     ebook_type: EBookType | None
     status: BookStatus = BookStatus.AVAILABLE
     published_date: date | None
-    isbn: str | None
+    isbn: str | None = Field(None, pattern=r"^(?:\d{10}|\d{13})$")
     genre: str | None = Field(None, max_length=50)
     language: str | None = Field(None, max_length=30)
 
@@ -61,6 +65,6 @@ class BookUpdate(BaseModel):
     ebook_type: EBookType | None
     status: BookStatus | None
     published_date: date | None
-    isbn: str | None
+    isbn: str | None = Field(None, pattern=r"^(?:\d{10}|\d{13})$")
     genre: str | None = Field(None, max_length=50)
     language: str | None = Field(None, max_length=30)

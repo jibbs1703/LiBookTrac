@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "added books models"
+COMMIT_MSG ?= "refactored books models"
 
 # Lint Scripts Locally
 lint:
