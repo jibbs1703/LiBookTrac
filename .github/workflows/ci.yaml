@@ -23,4 +23,6 @@ jobs:
       packages: write
     secrets: inherit
     needs: tests
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
+    if: github.event_name == 'push' 
+    # && github.ref == 'refs/heads/main'
+    # && github.event.pull_request.merged == true
