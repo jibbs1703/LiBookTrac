@@ -8,18 +8,21 @@ from pydantic import BaseModel, Field, model_validator
 
 
 class BookFormat(Enum):
-    PAPERBACK = "paperback"
+    """Enum Class describing the Book Format."""
+    HARDCOVER = "hardcover"
     EBOOK = "ebook"
     AUDIOBOOK = "audiobook"
 
 
 class BookAudience(Enum):
+    """Enum Class describing the Book Audience."""
     ADULT = "adult"
     YOUNG_ADULT = "young_adult"
     CHILDREN = "children"
 
 
 class EBookType(Enum):
+    """Enum Class describing the EBook Type."""
     PDF = "pdf"
     EPUB = "epub"
     MOBI = "mobi"
@@ -31,6 +34,7 @@ class EBookType(Enum):
 
 
 class BookLanguage(Enum):
+    """Enum Class describing the Language the Book is Written."""
     ENGLISH = "english"
     FRENCH = "french"
     SPANISH = "spanish"
@@ -38,17 +42,29 @@ class BookLanguage(Enum):
 
 
 class BookCreateCondition(Enum):
+    """Enum Class describing the Book Condition at Entry  into the Library."""
     NEW = "new"
     GOOD = "good"
     FAIR = "fair"
 
 
 class BookUpdateCondition(Enum):
+    """Enum Class describing the Book Condition when Updated."""
+    DAMAGED = "damaged"
+    LOST = "lost"
+
+
+class BookCondition(Enum):
+    """Enum Class describing all Possible Book Conditions."""
+    NEW = "new"
+    GOOD = "good"
+    FAIR = "fair"
     DAMAGED = "damaged"
     LOST = "lost"
 
 
 class BookLocation(Enum):
+    """Enum Class describing the Book's Location."""
     MAIN = "main"
     BRANCH1 = "branch1"
     BRANCH2 = "branch2"
@@ -58,14 +74,15 @@ class BookCreate(BaseModel):
     """Pydantic Model to Create a Book in the Database."""
     title: str = Field(min_length=1, max_length=200)
     author_first_name: str = Field(min_length=2, max_length=100)
-    author_last_name: str = Field(min_length=2, max_length=100)
+    author_middle_name: str | None = Field(None, min_length=2, max_length=100)
+    author_last_name: str | None = Field(None, min_length=2, max_length=100)
     description: str | None = Field(None, max_length=1000)
     language: BookLanguage
     book_type: BookFormat
-    ebook_type: EBookType | None = Field(None,)
-    paperback_condition: BookCreateCondition | None
-    publisher: str | None = Field(max_length=100)
-    edition: int = Field(ge=1)
+    ebook_type: EBookType | None = Field(None)
+    hardcover_condition: BookCreateCondition | None = Field(None)
+    publisher: str | None = Field(None, max_length=100)
+    edition: int| None = Field(None, ge=1)
     page_count: int = Field(ge=1)
     tags: list[str] | None = Field(None, max_length=10)
     isbn: str | None = Field(None, pattern=r"^(?:\d{10}|\d{13})$")
@@ -73,7 +90,7 @@ class BookCreate(BaseModel):
     publication_year: date | None
     target_audience: BookAudience
     location: BookLocation
-    replacement_cost: float = Field(ge=0.0)
+    replacement_cost: float | None = Field(None, ge=0.0)
 
     @model_validator(mode="after")
     def check_ebook_type_required(self):
@@ -83,8 +100,8 @@ class BookCreate(BaseModel):
     
     @model_validator(mode="after")
     def check_paperback_condition(self):
-        if self.book_type == BookFormat.PAPERBACK and self.paperback_condition is None:
-            raise ValueError("paperback condition must be specified when book_type is 'ebook'")
+        if self.book_type == BookFormat.HARDCOVER and self.hardcover_condition is None:
+            raise ValueError("hardcover condition must be specified when book_type is 'ebook'")
         return self
 
 
@@ -125,5 +142,5 @@ class BookUpdate(BaseModel):
     replacement_cost: float | None = Field(None, ge=0.0, 
                                            description="Update replacement cost.")
     ebook_type: EBookType | None = Field(None, description="Update ebook type.")
-    paperback_condition: BookCreateCondition | None = Field(None,
-                            description="Update paperback/hardcover condition.")
+    hardcover_condition: BookCreateCondition | None = Field(None,
+                            description="Update hardcover/hardcover condition.")

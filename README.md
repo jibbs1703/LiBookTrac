@@ -63,3 +63,7 @@ docker rm -f libooktrac-env || true # Remove existing container if it exists
 docker run -it --name libooktrac-env -v .:/workspace -p 8000:8000 libooktrac:latest
 docker exec -it libooktrac-env sh
 ```
+
+- TODO
+
+- use isbn check to input book details (external API exists)
