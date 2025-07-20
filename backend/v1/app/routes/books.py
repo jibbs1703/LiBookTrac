@@ -1,76 +1,82 @@
 """LibookTrac Backend Books Endpoints."""
 
-from fastapi import APIRouter, HTTPException
-from starlette.status import HTTP_200_OK, HTTP_201_CREATED
+from datetime import datetime
+from uuid import UUID, uuid4
 
-from backend.v1.app.models.books import BookInformation, BookResponse
-from backend.v1.app.server import config
+from fastapi import APIRouter, HTTPException, Response
+from starlette.status import (
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_404_NOT_FOUND,
+    HTTP_409_CONFLICT,
+)
+
+from backend.v1.app.models.books import BookCreate, BookResponse
 
 router = APIRouter()
 
+# Remove After DB is connected
+books_db: dict = {}
+isbn_set: set = set()
 
-@router.get(path="/get-book/", response_model=BookResponse,
-            name="books:get-book", status_code=HTTP_200_OK)
-async def get_book_information(title: str = None,
-                               author: str = None,
-                               genre: str = None,
-                               isbn: str = None,
-                               book_type: str = None)-> BookResponse:
-    """
-    This endpoint searches for books in the database based on the 
-    request criteria.
 
-    Args:
-    request: BookRequest object containing search criteria.
+@router.post("/add",
+             response_model=BookResponse,
+             status_code=HTTP_201_CREATED)
+async def create_book(book: BookCreate):
+    """Create a Book in the Database."""
+    if book.isbn and book.isbn in isbn_set:
+        raise HTTPException(
+            status_code=HTTP_409_CONFLICT,
+            detail=f"Book with ISBN '{book.isbn}' already exists."
+        )
 
-    Returns:
-    BookSearchResponse object containing the search results
-    """
-    collection = config.BOOKS_COLLECTION
-    # request = 
-    query = {}
-    if title:
-        query["title"] = {"$regex": title, "$options": "i"}
-    if author:
-        query["author"] = {"$regex": author, "$options": "i"}
-    if genre:
-        query["genre"] = {"$regex": f"^{genre}$", "$options": "i"}
-    if isbn:
-        query["isbn"] = isbn
-    if book_type:
-        query["book_type"] = book_type
+    new_book_id = uuid4()
+    while new_book_id in books_db:
+        new_book_id = uuid4()
 
-    filtered_books = []
-    async for book in collection.find(query):
-        filtered_books.append(book)
-    if not filtered_books:
-        raise HTTPException(status_code=404, detail="No books found matching the criteria")
+    current_time = datetime.now()
 
-    return BookResponse(
-        results=[BookInformation(**book) for book in filtered_books],
-        total_count=len(filtered_books)
+    book_response = BookResponse(
+        **book.model_dump(),
+        book_id=new_book_id,
+        book_entry_time=current_time,
+        last_updated_date=current_time
     )
 
+    books_db[new_book_id] = book_response
+    if book.isbn:
+        isbn_set.add(book.isbn)
 
-@router.post(path="/add-book/", response_model=BookInformation,
-             name="books:add-book", status_code=HTTP_201_CREATED)
-async def add_book_to_database(book: BookInformation) -> BookInformation:
+    return book_response
+
+
+@router.get("/get/all", response_model=list[BookResponse])
+async def get_all_books():
     """
-    Add a new book to the database.
-
-    This endpoint accepts a BookInformation object containing
-    details about the book (e.g., title, author, genre, ISBN, etc.)
-    and stores it in the MongoDB database. The newly added book's
-    information is returned as confirmation.
-
-    Args:
-    book (BookInformation): The book details to be added to the database.
-
-    Returns:
-    BookInformation: The newly created book entry with its details.
+    Retrieves a list of all books stored in the database.
     """
-    collection = config.BOOKS_COLLECTION
-    book_as_dict = book.model_dump()
-    result = await collection.insert_one(book_as_dict)
-    created_book = await result.find_one({"_id": result.inserted_id})
-    return BookInformation(**created_book)
+    return list(books_db.values())
+
+
+@router.get("/get/{criteria}", response_model=list[BookResponse])
+async def get_book():
+    """
+    Retrieves a list of all books stored in the database.
+    """
+    return list(books_db.values())
+
+
+@router.delete("/delete/{book_id}",
+               status_code=HTTP_204_NO_CONTENT)
+async def delete_book(book_id: UUID):
+    """Delete a book from the database by its book_id."""
+    if book_id not in books_db:
+        raise HTTPException(status_code=HTTP_404_NOT_FOUND,
+                            detail="Book not found by ID.")
+
+    book_to_delete = books_db.pop(book_id)
+    if book_to_delete.isbn and book_to_delete.isbn in books_db:
+        del books_db[book_to_delete.isbn]
+    
+    return Response(status_code=HTTP_204_NO_CONTENT)
