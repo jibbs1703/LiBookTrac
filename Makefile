@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "refactored books models and routes; added books table schema"
+COMMIT_MSG ?= "fixed issue with push-image.yaml"
 
 # Lint Scripts Locally
 lint:
