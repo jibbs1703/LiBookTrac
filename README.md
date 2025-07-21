@@ -1,13 +1,13 @@
 # LiBookTrac: A Library Management System
 
 ![Python Version](https://img.shields.io/badge/python-3.12-blue)
-![CI](https://github.com/jibbs1703/LiBookTrac/actions/workflows/CI.yaml/badge.svg)
+[![CI](https://github.com/jibbs1703/LiBookTrac/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/jibbs1703/LiBookTrac/actions/workflows/ci.yaml)
 ![FastAPI](https://img.shields.io/badge/FastAPI-v0.116-blue?logo=fastapi&style=flat)
 [![Pydantic v2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json)](https://pydantic.dev)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v16-blue?logo=postgresql&style=flat)
 ![Docker](https://img.shields.io/badge/Docker-v41-blue?logo=docker&style=flat)
 ![Nginx](https://img.shields.io/badge/Nginx-v1.28-green?logo=nginx&style=flat)
-![pre-commit](https://img.shields.io/badge/precommit-enabled-yellow)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)
 ![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)
 

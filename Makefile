@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "fixed issue with push-image.yaml"
+COMMIT_MSG ?= "updated CI to ignore non-code related files"
 
 # Lint Scripts Locally
 lint:
