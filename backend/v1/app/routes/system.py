@@ -14,4 +14,5 @@ async def home():
 @router.get("/health/ready")
 async def healthcheck():
     """HealthCheck Endpoint."""
+    # TODO: Implement health check logic
     return {"message": "Welcome to the Libooktrac HealthCheck Endpoint"}

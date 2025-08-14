@@ -1,5 +1,5 @@
 # Default commit message
-COMMIT_MSG ?= "updated CI to ignore non-code related files"
+COMMIT_MSG ?= "Reset book routes"
 
 # Lint Scripts Locally
 lint:
