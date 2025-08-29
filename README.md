@@ -30,6 +30,7 @@ and high-performance solution for both library administrators and users.
 - **FastAPI:** A modern web framework for building APIs with Python based on standard Python type hints.
 - **Pydantic:** Data validation and settings management using Python type annotations.
 - **PostgreSQL:**  A relational database management system for storing library data.
+- **Docker:** Containerization platform for easy deployment and scalability.
 
 ## Getting Started
 
@@ -50,20 +51,3 @@ libooktrac\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
-
-- **Run Library Management Application Locally:**
-```bash
-uvicorn app.main:app --host 127.0.0.1 --port 8008
-```
-
-- **Run Library Management Application in Container:**
-```bash
-docker build -f backend.Dockerfile -t libooktrac:latest .
-docker rm -f libooktrac-env || true # Remove existing container if it exists
-docker run -it --name libooktrac-env -v .:/workspace -p 8000:8000 libooktrac:latest
-docker exec -it libooktrac-env sh
-```
-
-- TODO
-
-- use isbn check to input book details (external API exists)
