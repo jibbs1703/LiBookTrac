@@ -27,12 +27,12 @@ jobs:
     uses: ./.github/workflows/test-lint.yaml
     secrets: inherit
 
-  docker:
-    name: Build and Push Docker Image
-    uses: ./.github/workflows/push-image.yaml
-    permissions:
-      contents: read
-      packages: write
-    secrets: inherit
-    needs: tests
-    if: github.ref == 'refs/heads/main'
+  # docker:
+  #   name: Build and Push Docker Image
+  #   uses: ./.github/workflows/push-image.yaml
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   secrets: inherit
+  #   needs: tests
+  #   if: github.ref == 'refs/heads/main'
